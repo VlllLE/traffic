@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="24dp">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/brand"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+        <ImageView
+            android:id="@+id/detailIcon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="@dimen/screen_pad"
+            android:layout_marginTop="12dp"
+            android:contentDescription="@string/app_name"
+            app:tint="?attr/colorOnSurface" />
+
+        <TextView
+            android:id="@+id/detailTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/screen_pad"
+            android:paddingTop="8dp"
+            android:paddingEnd="@dimen/screen_pad"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/detailDelay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/screen_pad"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/screen_pad"
+            android:padding="10dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/detailComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/screen_pad"
+            android:paddingTop="12dp"
+            android:paddingEnd="@dimen/screen_pad"
+            android:textColor="?attr/colorOnSurface"
+            android:textIsSelectable="true"
+            android:textSize="18sp" />
+
+        <TextView android:id="@+id/detailRoads" style="@style/Fact" android:paddingStart="@dimen/screen_pad" android:paddingEnd="@dimen/screen_pad" />
+        <TextView android:id="@+id/detailDirection" style="@style/Fact" android:paddingStart="@dimen/screen_pad" android:paddingEnd="@dimen/screen_pad" />
+        <TextView android:id="@+id/detailFrom" style="@style/Fact" android:paddingStart="@dimen/screen_pad" android:paddingEnd="@dimen/screen_pad" />
+        <TextView android:id="@+id/detailTo" style="@style/Fact" android:paddingStart="@dimen/screen_pad" android:paddingEnd="@dimen/screen_pad" />
+        <TextView android:id="@+id/detailWhen" style="@style/Fact" android:paddingStart="@dimen/screen_pad" android:paddingEnd="@dimen/screen_pad" />
+        <TextView android:id="@+id/detailDuration" style="@style/Fact" android:paddingStart="@dimen/screen_pad" android:paddingEnd="@dimen/screen_pad" />
+        <TextView android:id="@+id/detailLanes" style="@style/Fact" android:paddingStart="@dimen/screen_pad" android:paddingEnd="@dimen/screen_pad" />
+        <TextView android:id="@+id/detailCompliance" style="@style/Fact" android:paddingStart="@dimen/screen_pad" android:paddingEnd="@dimen/screen_pad" />
+        <TextView android:id="@+id/detailProbability" style="@style/Fact" android:paddingStart="@dimen/screen_pad" android:paddingEnd="@dimen/screen_pad" />
+        <TextView android:id="@+id/detailUrgent" style="@style/Fact" android:paddingStart="@dimen/screen_pad" android:paddingEnd="@dimen/screen_pad" />
+        <TextView android:id="@+id/detailStatus" style="@style/Fact" android:paddingStart="@dimen/screen_pad" android:paddingEnd="@dimen/screen_pad" />
+        <TextView android:id="@+id/detailSource" style="@style/Fact" android:paddingStart="@dimen/screen_pad" android:paddingEnd="@dimen/screen_pad" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/detailMapButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/screen_pad"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="@dimen/screen_pad"
+            android:text="@string/show_on_map" />
+    </LinearLayout>
+</ScrollView>
