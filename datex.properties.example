@@ -1,0 +1,7 @@
+# Copy this file to datex.properties (that file is gitignored) and put in
+# the Client ID and Key from the Traffic Scotland developer portal:
+# Applications -> DATEX II -> API Credentials
+# Then rebuild the project. The values are compiled into the app and are
+# not committed with the source.
+clientId=YOUR_ID_HERE
+clientKey=YOUR_KEY_HERE

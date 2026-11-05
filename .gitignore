@@ -1,0 +1,15 @@
+*.iml
+.gradle/
+local.properties
+datex.properties
+.idea/
+.DS_Store
+build/
+captures/
+*.apk
+*.ap_
+*.aab
+output.json
+.externalNativeBuild
+.cxx
+*.hprof

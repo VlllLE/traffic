@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Traffic Scotland</string>
+    <string name="search_hint">Road name, for example M8, A90 or A74(M)</string>
+    <string name="feed_all">All</string>
+    <string name="feed_incidents">Incidents</string>
+    <string name="feed_roadworks">Roadworks</string>
+    <string name="distance_switch">Only situations within this distance</string>
+    <string name="distance_km">%1$d km</string>
+    <string name="use_my_location">Use my location</string>
+    <string name="use_glasgow">Use Glasgow point</string>
+    <string name="location_fixed">Glasgow (fixed point)</string>
+    <string name="location_phone">Phone location</string>
+    <string name="location_waiting">Waiting for phone location</string>
+    <string name="location_line">Search point: %1$s (%2$.3f, %3$.3f)</string>
+    <string name="location_denied">Location permission denied. The Glasgow point is still available.</string>
+    <string name="location_unavailable">No location provider is switched on. The Glasgow point is still available.</string>
+    <string name="loading">Loading traffic data…</string>
+    <string name="no_data">No situations to show yet.</string>
+    <string name="no_matches">Nothing matches this search.</string>
+    <string name="legend">Roadworks delays: green none, amber short, orange long, red very long. Incidents: red closure, amber queue, blue lanes.</string>
+    <string name="refresh">Refresh</string>
+    <string name="map">Map</string>
+    <string name="about">About</string>
+    <string name="about_title">About this data</string>
+    <string name="about_body">Contains Traffic Scotland data from the DATEX II unplanned-events and current-roadworks publications. Lists, details, search and the map are part of this app. The feeds refresh automatically every 5 minutes while the app is open, and the last saved copy is kept if the connection drops.</string>
+    <string name="map_attribution">Map data © OpenStreetMap contributors</string>
+    <string name="map_hint">Tap a marker to read the situation.</string>
+    <string name="full_details">Full details</string>
+    <string name="show_on_map">Show on map</string>
+    <string name="preview_empty">Select a situation to see it here and on the map.</string>
+    <string name="zoom_in">Zoom in</string>
+    <string name="zoom_out">Zoom out</string>
+    <string name="fit">Fit</string>
+    <string name="unavailable">Situation unavailable</string>
+    <string name="unavailable_body">This situation is not in the current feed.</string>
+    <string name="origin_live">Live</string>
+    <string name="origin_saved">Saved copy</string>
+    <string name="origin_sample">Sample</string>
+    <string name="origin_waiting">Waiting</string>
+    <string name="status_counts">Showing %1$d of %2$d · %3$d incidents · %4$d roadworks · %5$s · Auto-refresh every %6$d min</string>
+    <string name="published_incidents">Incidents published %1$s</string>
+    <string name="published_roadworks">Roadworks published %1$s</string>
+    <string name="updated">Updated %1$s</string>
+</resources>

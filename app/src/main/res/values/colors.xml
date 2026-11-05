@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="brand">#0B3A4A</color>
+    <color name="brand_dark">#072833</color>
+    <color name="accent">#1F8A70</color>
+    <color name="white">#FFFFFF</color>
+    <color name="delay_none">#2E7D32</color>
+    <color name="delay_short">#F9A825</color>
+    <color name="delay_long">#EF6C00</color>
+    <color name="delay_very_long">#C62828</color>
+    <color name="delay_unknown">#6D4C41</color>
+    <color name="closure">#B71C1C</color>
+    <color name="queue">#F9A825</color>
+    <color name="lanes">#1565C0</color>
+    <color name="other">#455A64</color>
+    <color name="notice_sample">#E3F2FD</color>
+    <color name="notice_saved">#FFF3E0</color>
+    <color name="notice_error">#FFEBEE</color>
+    <color name="notice_text">#102027</color>
+</resources>

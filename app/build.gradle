@@ -1,0 +1,50 @@
+plugins {
+    id 'com.android.application'
+}
+
+def datex = new Properties()
+def datexFile = rootProject.file("datex.properties")
+if (datexFile.exists()) {
+    datexFile.withInputStream { datex.load(it) }
+}
+
+android {
+    namespace 'com.gcu.trafficscotland'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.gcu.trafficscotland"
+        minSdk 26
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+
+        def clientId = datex.getProperty("clientId", "")
+        def clientKey = datex.getProperty("clientKey", "")
+        buildConfigField "String", "DATEX_CLIENT_ID", quoted(clientId)
+        buildConfigField "String", "DATEX_CLIENT_KEY", quoted(clientKey)
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation project(':core')
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'
+    implementation 'androidx.core:core:1.13.1'
+    implementation 'com.google.android.material:material:1.12.0'
+}
+
+def quoted(String value) {
+    String safe = value == null ? "" : value
+    safe = safe.replace("\\", "\\\\").replace("\"", "\\\"")
+    return "\"${safe}\""
+}
