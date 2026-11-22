@@ -1,7 +1,6 @@
 package com.gcu.trafficscotland.ui;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
@@ -29,15 +28,14 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gcu.trafficscotland.R;
-import com.gcu.trafficscotland.TrafficApp;
 import com.gcu.trafficscotland.data.DataOrigin;
-import com.gcu.trafficscotland.data.TrafficRepository;
 import com.gcu.trafficscotland.data.TrafficSnapshot;
-import com.gcu.trafficscotland.logic.SituationQuery;
 import com.gcu.trafficscotland.logic.SituationText;
 import com.gcu.trafficscotland.map.OsmMapView;
 import com.gcu.trafficscotland.model.FeedKind;
@@ -47,35 +45,16 @@ import com.google.android.material.button.MaterialButtonToggleGroup;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Locale;
 
-/**
- * Name                 _________________
- * Student ID           _________________
- * Programme of Study   _________________
- *
- * Portrait is a searchable list. Landscape is a different arrangement:
- * the list stays on the left and the map plus the selected situation stay on the right.
+ /* 67 67 6767676767676767 
  */
-public class MainActivity extends AppCompatActivity implements TrafficRepository.Listener, LocationListener {
-    public static final double GLASGOW_LAT = 55.8609;
-    public static final double GLASGOW_LON = -4.2518;
-    public static final int[] RADII_KM = {5, 10, 25, 50, 100, 200};
-    private static final int LOCATION_REQUEST = 42;
+public class MainActivity extends AppCompatActivity implements LocationListener {
+        private static final int LOCATION_REQUEST = 42;
 
-    private static final String STATE_FEED = "feed";
-    private static final String STATE_DISTANCE = "distance";
-    private static final String STATE_RADIUS = "radius";
-    private static final String STATE_DEVICE = "device";
-    private static final String STATE_LAT = "lat";
-    private static final String STATE_LON = "lon";
-    private static final String STATE_NAME = "name";
-    private static final String STATE_ID = "id";
-    private static final String STATE_ROAD = "road";
-
-    private TrafficRepository repository;
+    private MainViewModel model;
     private SituationAdapter adapter;
+    private View home;
     private TextView statusText;
     private TextView noticeBanner;
     private TextView emptyText;
@@ -93,16 +72,7 @@ public class MainActivity extends AppCompatActivity implements TrafficRepository
     private MaterialButtonToggleGroup feedToggle;
     private android.widget.EditText roadSearch;
     private Button locationButton;
-
-    private FeedKind feed;
-    private boolean distanceOn;
-    private int radiusIndex = 2;
-    private boolean useDeviceLocation;
-    private double latitude = GLASGOW_LAT;
-    private double longitude = GLASGOW_LON;
-    private String locationName;
-    private String selectedId = "";
-    private boolean refreshing;
+    private boolean updating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,140 +84,60 @@ public class MainActivity extends AppCompatActivity implements TrafficRepository
             return insets;
         });
 
-        repository = ((TrafficApp) getApplication()).repository();
-        locationName = getString(R.string.location_fixed);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        model = new ViewModelProvider(this).get(MainViewModel.class);
+        home = findViewById(R.id.home);
+        Toolbar toolbar = home.findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        statusText = findViewById(R.id.statusText);
-        noticeBanner = findViewById(R.id.noticeBanner);
-        emptyText = findViewById(R.id.emptyText);
-        distanceValue = findViewById(R.id.distanceValue);
-        locationLabel = findViewById(R.id.locationLabel);
-        progress = findViewById(R.id.progress);
-        list = findViewById(R.id.list);
-        roadSearch = findViewById(R.id.roadSearch);
-        distanceSwitch = findViewById(R.id.distanceSwitch);
-        distanceSeek = findViewById(R.id.distanceSeek);
-        feedToggle = findViewById(R.id.feedToggle);
-        locationButton = findViewById(R.id.locationButton);
-        embeddedMap = findViewById(R.id.embeddedMap);
-        previewTitle = findViewById(R.id.previewTitle);
-        previewComment = findViewById(R.id.previewComment);
-        previewMeta = findViewById(R.id.previewMeta);
-        previewButton = findViewById(R.id.previewButton);
+        statusText = home.findViewById(R.id.statusText);
+        noticeBanner = home.findViewById(R.id.noticeBanner);
+        emptyText = home.findViewById(R.id.emptyText);
+        distanceValue = home.findViewById(R.id.distanceValue);
+        locationLabel = home.findViewById(R.id.locationLabel);
+        progress = home.findViewById(R.id.progress);
+        list = home.findViewById(R.id.list);
+        roadSearch = home.findViewById(R.id.roadSearch);
+        distanceSwitch = home.findViewById(R.id.distanceSwitch);
+        distanceSeek = home.findViewById(R.id.distanceSeek);
+        feedToggle = home.findViewById(R.id.feedToggle);
+        locationButton = home.findViewById(R.id.locationButton);
+        embeddedMap = home.findViewById(R.id.embeddedMap);
+        previewTitle = home.findViewById(R.id.previewTitle);
+        previewComment = home.findViewById(R.id.previewComment);
+        previewMeta = home.findViewById(R.id.previewMeta);
+        previewButton = home.findViewById(R.id.previewButton);
 
         adapter = new SituationAdapter(this::onSituationChosen);
         list.setLayoutManager(new LinearLayoutManager(this));
         list.setAdapter(adapter);
-
-        if (savedInstanceState != null) {
-            restore(savedInstanceState);
-        }
-        distanceSeek.setMax(RADII_KM.length - 1);
-        distanceSeek.setProgress(radiusIndex);
-        distanceSwitch.setChecked(distanceOn);
-        roadSearch.setText(savedInstanceState == null ? "" : savedInstanceState.getString(STATE_ROAD, ""));
-        feedToggle.check(feedId());
-        applyLocationControls();
-
-        roadSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                render();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-        feedToggle.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
-            if (!isChecked) {
-                return;
-            }
-            if (checkedId == R.id.feedIncidents) {
-                feed = FeedKind.INCIDENT;
-            } else if (checkedId == R.id.feedRoadworks) {
-                feed = FeedKind.ROADWORKS;
-            } else {
-                feed = null;
-            }
-            render();
-        });
-        distanceSwitch.setOnCheckedChangeListener((button, checked) -> {
-            distanceOn = checked;
-            distanceSeek.setEnabled(checked);
-            render();
-        });
-        distanceSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                radiusIndex = progress;
-                distanceValue.setText(getString(R.string.distance_km, RADII_KM[radiusIndex]));
-                if (fromUser && distanceOn) {
-                    render();
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-        });
-        locationButton.setOnClickListener(v -> {
-            if (useDeviceLocation) {
-                useFixedPoint();
-            } else {
-                requestDeviceLocation();
-            }
-        });
-        if (previewButton != null) {
-            previewButton.setOnClickListener(v -> openDetail(selectedId));
-        }
+        wireInput();
         if (embeddedMap != null) {
             embeddedMap.setOnSituationClickListener(this::onSituationChosen);
             wireZoom(embeddedMap);
         }
-        render();
+        if (previewButton != null) {
+            previewButton.setOnClickListener(v -> model.openDetail());
+        }
+        getSupportFragmentManager().addOnBackStackChangedListener(this::syncScreen);
+        syncScreen();
+        model.state().observe(this, this::render);
+        model.navigation().observe(this, nav -> {
+            if (nav == null) {
+                return;
+            }
+            MainViewModel.Screen screen = nav.consume();
+            if (screen == MainViewModel.Screen.DETAIL) {
+                showFragment(new DetailFragment());
+            } else if (screen == MainViewModel.Screen.MAP) {
+                showFragment(new MapFragment());
+            }
+        });
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        repository.addListener(this);
-    }
-
-    @Override
-    protected void onStop() {
-        repository.removeListener(this);
-        super.onStop();
-    }
-
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(STATE_FEED, feed == null ? -1 : feed.ordinal());
-        outState.putBoolean(STATE_DISTANCE, distanceOn);
-        outState.putInt(STATE_RADIUS, radiusIndex);
-        outState.putBoolean(STATE_DEVICE, useDeviceLocation);
-        outState.putDouble(STATE_LAT, latitude);
-        outState.putDouble(STATE_LON, longitude);
-        outState.putString(STATE_NAME, locationName);
-        outState.putString(STATE_ID, selectedId);
-        outState.putString(STATE_ROAD, roadSearch.getText().toString());
-    }
-
-    @Override
-    public void onTrafficUpdated(TrafficSnapshot snapshot, boolean refreshing) {
-        this.refreshing = refreshing;
-        render();
+        syncScreen();
     }
 
     @Override
@@ -260,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements TrafficRepository
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem location = menu.findItem(R.id.action_location);
         if (location != null) {
-            location.setTitle(useDeviceLocation ? R.string.use_glasgow : R.string.use_my_location);
+            location.setTitle(model.usingDeviceLocation() ? R.string.use_glasgow : R.string.use_my_location);
         }
         return super.onPrepareOptionsMenu(menu);
     }
@@ -269,17 +159,17 @@ public class MainActivity extends AppCompatActivity implements TrafficRepository
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
-            repository.refreshNow();
+            model.refresh();
             return true;
         }
         if (id == R.id.action_map) {
-            startActivity(MapActivity.intent(this, true, feed, roadSearch.getText().toString(),
-                    distanceOn, latitude, longitude, RADII_KM[radiusIndex], selectedId));
+            model.openMap(MainViewModel.MapFilter.CURRENT);
             return true;
         }
         if (id == R.id.action_location) {
-            if (useDeviceLocation) {
-                useFixedPoint();
+            if (model.usingDeviceLocation()) {
+                stopLocationUpdates();
+                model.useFixedPoint();
             } else {
                 requestDeviceLocation();
             }
@@ -303,25 +193,15 @@ public class MainActivity extends AppCompatActivity implements TrafficRepository
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 requestDeviceLocation();
             } else {
-                useDeviceLocation = false;
                 Toast.makeText(this, R.string.location_denied, Toast.LENGTH_LONG).show();
-                applyLocationControls();
             }
         }
     }
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
-        latitude = location.getLatitude();
-        longitude = location.getLongitude();
-        locationName = getString(R.string.location_phone);
-        useDeviceLocation = true;
-        applyLocationControls();
-        render();
-        LocationManager manager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        if (manager != null) {
-            manager.removeUpdates(this);
-        }
+        model.usePhoneLocation(location.getLatitude(), location.getLongitude());
+        stopLocationUpdates();
     }
 
     @Override
@@ -336,89 +216,123 @@ public class MainActivity extends AppCompatActivity implements TrafficRepository
     public void onProviderDisabled(@NonNull String provider) {
     }
 
-    private void onSituationChosen(Situation situation) {
-        selectedId = situation.stableId();
-        if (previewTitle != null) {
-            render();
-            if (embeddedMap != null) {
-                embeddedMap.centerOn(situation);
+    private void wireInput() {
+        roadSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
-            int position = adapter.positionOf(selectedId);
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!updating) {
+                    model.setRoad(s.toString());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+        feedToggle.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+            if (!isChecked || updating) {
+                return;
+            }
+            if (checkedId == R.id.feedIncidents) {
+                model.setFeed(FeedKind.INCIDENT);
+            } else if (checkedId == R.id.feedRoadworks) {
+                model.setFeed(FeedKind.ROADWORKS);
+            } else {
+                model.setFeed(null);
+            }
+        });
+        distanceSwitch.setOnCheckedChangeListener((button, checked) -> {
+            if (!updating) {
+                model.setDistanceEnabled(checked);
+            }
+        });
+        distanceSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser && !updating) {
+                    model.setRadiusIndex(progress);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+        locationButton.setOnClickListener(v -> {
+            if (model.usingDeviceLocation()) {
+                stopLocationUpdates();
+                model.useFixedPoint();
+            } else {
+                requestDeviceLocation();
+            }
+        });
+    }
+
+    private void onSituationChosen(Situation situation) {
+        model.select(situation.stableId());
+        if (embeddedMap != null) {
+            embeddedMap.centerOn(situation);
+            int position = adapter.positionOf(situation.stableId());
             if (position >= 0) {
                 list.scrollToPosition(position);
             }
         } else {
-            render();
-            openDetail(selectedId);
+            model.openDetail();
         }
     }
 
-    private void openDetail(String id) {
-        if (id == null || id.isEmpty()) {
-            return;
+    private void render(MainViewModel.State state) {
+        updating = true;
+        if (!roadSearch.getText().toString().equals(state.road)) {
+            roadSearch.setText(state.road);
+            roadSearch.setSelection(state.road.length());
         }
-        startActivity(DetailActivity.intent(this, id));
-    }
+        feedToggle.check(feedId(state.feed));
+        distanceSwitch.setChecked(state.distanceOn);
+        distanceSeek.setEnabled(state.distanceOn);
+        distanceSeek.setProgress(state.radiusIndex);
+        updating = false;
 
-    private void render() {
-        TrafficSnapshot snapshot = repository.snapshot();
-        double radius = RADII_KM[Math.max(0, Math.min(RADII_KM.length - 1, radiusIndex))];
-        SituationQuery query = new SituationQuery(
-                feed,
-                roadSearch.getText().toString(),
-                distanceOn ? latitude : null,
-                distanceOn ? longitude : null,
-                distanceOn ? radius : null);
-        List<Situation> shown = query.apply(snapshot.situations);
-        Situation selected = null;
-        for (Situation situation : shown) {
-            if (situation.stableId().equals(selectedId)) {
-                selected = situation;
-                break;
-            }
-        }
-        if (selected == null) {
-            selectedId = "";
-        }
-        adapter.submit(shown, selectedId, distanceOn, latitude, longitude);
-        boolean empty = shown.isEmpty();
+        String selectedId = state.selectedInList == null ? "" : state.selectedId;
+        adapter.submit(state.shown, selectedId, state.distanceOn, state.latitude, state.longitude);
+        boolean empty = state.shown.isEmpty();
         emptyText.setVisibility(empty ? View.VISIBLE : View.GONE);
         list.setVisibility(empty ? View.GONE : View.VISIBLE);
         if (empty) {
-            if (snapshot.situations.isEmpty()) {
-                emptyText.setText(refreshing ? R.string.loading : R.string.no_data);
+            if (state.snapshot.situations.isEmpty()) {
+                emptyText.setText(state.refreshing ? R.string.loading : R.string.no_data);
             } else {
                 emptyText.setText(R.string.no_matches);
             }
         }
-        statusText.setText(status(snapshot, shown.size()));
-        if (snapshot.notice == null || snapshot.notice.isEmpty()) {
-            noticeBanner.setVisibility(View.GONE);
-        } else {
-            noticeBanner.setVisibility(View.VISIBLE);
-            noticeBanner.setText(snapshot.notice);
-            int background = R.color.notice_saved;
-            if (snapshot.origin == DataOrigin.SAMPLE) {
-                background = R.color.notice_sample;
-            } else if (snapshot.origin == DataOrigin.EMPTY) {
-                background = R.color.notice_error;
-            }
-            noticeBanner.setBackgroundColor(getColor(background));
-        }
-        progress.setVisibility(refreshing ? View.VISIBLE : View.GONE);
-        distanceValue.setText(getString(R.string.distance_km, (int) radius));
-        locationLabel.setText(getString(R.string.location_line, locationName, latitude, longitude));
+        statusText.setText(status(state));
+        showNotice(state.snapshot);
+        progress.setVisibility(state.refreshing ? View.VISIBLE : View.GONE);
+        distanceValue.setText(getString(R.string.distance_km, state.radiusKm));
+        locationLabel.setText(getString(R.string.location_line, locationName(state), state.latitude, state.longitude));
+        locationButton.setText(state.locationSource == MainViewModel.LocationSource.FIXED
+                ? R.string.use_my_location : R.string.use_glasgow);
         if (embeddedMap != null) {
-            embeddedMap.setSituations(shown);
+            embeddedMap.setSituations(state.shown);
             embeddedMap.setSelectedId(selectedId);
         }
-        showPreview(selected);
+        showPreview(state);
+        invalidateOptionsMenu();
     }
 
-    private void showPreview(Situation situation) {
+    private void showPreview(MainViewModel.State state) {
         if (previewTitle == null) {
             return;
         }
+        Situation situation = state.selectedInList;
         if (situation == null) {
             previewTitle.setText(R.string.preview_empty);
             previewComment.setText("");
@@ -428,11 +342,28 @@ public class MainActivity extends AppCompatActivity implements TrafficRepository
         }
         previewTitle.setText(SituationText.typeLabel(situation));
         previewComment.setText(SituationRows.comment(situation));
-        previewMeta.setText(SituationRows.meta(situation, distanceOn, latitude, longitude));
+        previewMeta.setText(SituationRows.meta(situation, state.distanceOn, state.latitude, state.longitude));
         previewButton.setEnabled(true);
     }
 
-    private String status(TrafficSnapshot snapshot, int shown) {
+    private void showNotice(TrafficSnapshot snapshot) {
+        if (snapshot.notice == null || snapshot.notice.isEmpty()) {
+            noticeBanner.setVisibility(View.GONE);
+            return;
+        }
+        noticeBanner.setVisibility(View.VISIBLE);
+        noticeBanner.setText(snapshot.notice);
+        int background = R.color.notice_saved;
+        if (snapshot.origin == DataOrigin.SAMPLE) {
+            background = R.color.notice_sample;
+        } else if (snapshot.origin == DataOrigin.EMPTY) {
+            background = R.color.notice_error;
+        }
+        noticeBanner.setBackgroundColor(getColor(background));
+    }
+
+    private String status(MainViewModel.State state) {
+        TrafficSnapshot snapshot = state.snapshot;
         String origin;
         switch (snapshot.origin) {
             case LIVE:
@@ -448,9 +379,9 @@ public class MainActivity extends AppCompatActivity implements TrafficRepository
                 origin = getString(R.string.origin_waiting);
                 break;
         }
-        String line = getString(R.string.status_counts, shown, snapshot.situations.size(),
+        String line = getString(R.string.status_counts, state.shown.size(), snapshot.situations.size(),
                 snapshot.count(FeedKind.INCIDENT), snapshot.count(FeedKind.ROADWORKS),
-                origin, TrafficRepository.REFRESH_MINUTES);
+                origin, state.refreshMinutes);
         StringBuilder extra = new StringBuilder();
         if (snapshot.incidentsPublished != null) {
             extra.append(getString(R.string.published_incidents, SituationText.formatWhen(snapshot.incidentsPublished)));
@@ -476,19 +407,19 @@ public class MainActivity extends AppCompatActivity implements TrafficRepository
         return line + "\n" + extra;
     }
 
-    private void restore(Bundle state) {
-        int feedOrdinal = state.getInt(STATE_FEED, -1);
-        feed = feedOrdinal < 0 ? null : FeedKind.values()[feedOrdinal];
-        distanceOn = state.getBoolean(STATE_DISTANCE);
-        radiusIndex = state.getInt(STATE_RADIUS, 2);
-        useDeviceLocation = state.getBoolean(STATE_DEVICE);
-        latitude = state.getDouble(STATE_LAT, GLASGOW_LAT);
-        longitude = state.getDouble(STATE_LON, GLASGOW_LON);
-        locationName = state.getString(STATE_NAME, getString(R.string.location_fixed));
-        selectedId = state.getString(STATE_ID, "");
+    private String locationName(MainViewModel.State state) {
+        switch (state.locationSource) {
+            case PHONE:
+                return getString(R.string.location_phone);
+            case WAITING:
+                return getString(R.string.location_waiting);
+            case FIXED:
+            default:
+                return getString(R.string.location_fixed);
+        }
     }
 
-    private int feedId() {
+    private int feedId(FeedKind feed) {
         if (feed == FeedKind.INCIDENT) {
             return R.id.feedIncidents;
         }
@@ -498,23 +429,19 @@ public class MainActivity extends AppCompatActivity implements TrafficRepository
         return R.id.feedAll;
     }
 
-    private void applyLocationControls() {
-        distanceSeek.setEnabled(distanceOn);
-        locationButton.setText(useDeviceLocation ? R.string.use_glasgow : R.string.use_my_location);
-        invalidateOptionsMenu();
+    private void showFragment(Fragment fragment) {
+        findViewById(R.id.screen).setVisibility(View.VISIBLE);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.screen, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 
-    private void useFixedPoint() {
-        useDeviceLocation = false;
-        latitude = GLASGOW_LAT;
-        longitude = GLASGOW_LON;
-        locationName = getString(R.string.location_fixed);
-        LocationManager manager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        if (manager != null) {
-            manager.removeUpdates(this);
-        }
-        applyLocationControls();
-        render();
+    private void syncScreen() {
+        boolean open = getSupportFragmentManager().getBackStackEntryCount() > 0;
+        findViewById(R.id.screen).setVisibility(open ? View.VISIBLE : View.GONE);
     }
 
     private void requestDeviceLocation() {
@@ -534,22 +461,26 @@ public class MainActivity extends AppCompatActivity implements TrafficRepository
             Toast.makeText(this, R.string.location_unavailable, Toast.LENGTH_LONG).show();
             return;
         }
-        useDeviceLocation = true;
-        locationName = getString(R.string.location_waiting);
-        applyLocationControls();
+        model.markWaitingForPhone();
         Location last = manager.getLastKnownLocation(provider);
         if (last != null) {
             onLocationChanged(last);
         } else {
             manager.requestSingleUpdate(provider, this, Looper.getMainLooper());
-            render();
+        }
+    }
+
+    private void stopLocationUpdates() {
+        LocationManager manager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if (manager != null) {
+            manager.removeUpdates(this);
         }
     }
 
     private void wireZoom(OsmMapView map) {
-        View zoomIn = findViewById(R.id.zoomIn);
-        View zoomOut = findViewById(R.id.zoomOut);
-        View fit = findViewById(R.id.fitMap);
+        View zoomIn = home.findViewById(R.id.zoomIn);
+        View zoomOut = home.findViewById(R.id.zoomOut);
+        View fit = home.findViewById(R.id.fitMap);
         if (zoomIn != null) {
             zoomIn.setOnClickListener(v -> map.zoomBy(1));
         }

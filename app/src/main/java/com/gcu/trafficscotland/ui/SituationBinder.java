@@ -1,26 +1,26 @@
 package com.gcu.trafficscotland.ui;
 
-import android.app.Activity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gcu.trafficscotland.R;
 import com.gcu.trafficscotland.logic.SituationText;
+import com.gcu.trafficscotland.model.GeoPoint;
 import com.gcu.trafficscotland.model.Situation;
 
 import java.util.Locale;
 
-/** Fills the detail screen from one parsed situation. Empty facts are hidden. */
+/** Fills the detail view from one parsed situation. Empty facts are hidden. */
 public final class SituationBinder {
     private SituationBinder() {
     }
 
-    public static void bind(Activity activity, Situation situation) {
-        ImageView icon = activity.findViewById(R.id.detailIcon);
-        TextView title = activity.findViewById(R.id.detailTitle);
-        TextView delay = activity.findViewById(R.id.detailDelay);
-        TextView comment = activity.findViewById(R.id.detailComment);
+    public static void bind(View root, Situation situation) {
+        ImageView icon = root.findViewById(R.id.detailIcon);
+        TextView title = root.findViewById(R.id.detailTitle);
+        TextView delay = root.findViewById(R.id.detailDelay);
+        TextView comment = root.findViewById(R.id.detailComment);
         icon.setImageResource(DelayColours.icon(situation));
         title.setText(SituationText.typeLabel(situation));
         comment.setText(SituationRows.comment(situation));
@@ -31,44 +31,44 @@ public final class SituationBinder {
         } else {
             delay.setVisibility(View.VISIBLE);
             delay.setText(delayLabel);
-            delay.setBackgroundColor(DelayColours.stripe(activity, situation));
+            delay.setBackgroundColor(DelayColours.stripe(root.getContext(), situation));
             delay.setTextColor(DelayColours.onStripe(situation));
         }
 
-        setLine(activity, R.id.detailRoads, "Roads", SituationText.roadsLabel(situation));
+        setLine(root, R.id.detailRoads, "Roads", SituationText.roadsLabel(situation));
         String direction = SituationText.directionLabel(situation.direction);
         String kind = SituationText.pretty(situation.locationKind);
-        setLine(activity, R.id.detailDirection, "Location", join(kind, direction));
-        setLine(activity, R.id.detailFrom, "From", point(situation.from));
-        setLine(activity, R.id.detailTo, "To", point(situation.to));
-        setLine(activity, R.id.detailWhen, "When", when(situation));
-        setLine(activity, R.id.detailDuration, "Planned length", SituationText.durationLabel(situation));
-        setLine(activity, R.id.detailLanes, "Lanes", lanes(situation));
-        setLine(activity, R.id.detailCompliance, "Compliance", SituationText.pretty(situation.compliance));
-        setLine(activity, R.id.detailProbability, "Likelihood", SituationText.pretty(situation.probability));
-        setLine(activity, R.id.detailUrgent, "Urgent roadworks",
+        setLine(root, R.id.detailDirection, "Location", join(kind, direction));
+        setLine(root, R.id.detailFrom, "From", point(situation.from));
+        setLine(root, R.id.detailTo, "To", point(situation.to));
+        setLine(root, R.id.detailWhen, "When", when(situation));
+        setLine(root, R.id.detailDuration, "Planned length", SituationText.durationLabel(situation));
+        setLine(root, R.id.detailLanes, "Lanes", lanes(situation));
+        setLine(root, R.id.detailCompliance, "Compliance", SituationText.pretty(situation.compliance));
+        setLine(root, R.id.detailProbability, "Likelihood", SituationText.pretty(situation.probability));
+        setLine(root, R.id.detailUrgent, "Urgent roadworks",
                 "true".equalsIgnoreCase(situation.urgent) ? "Yes" : "");
-        setLine(activity, R.id.detailStatus, "Record", record(situation));
-        setLine(activity, R.id.detailSource, "Source", situation.source == null ? "" : situation.source);
-        activity.findViewById(R.id.detailMapButton).setVisibility(
+        setLine(root, R.id.detailStatus, "Record", record(situation));
+        setLine(root, R.id.detailSource, "Source", situation.source == null ? "" : situation.source);
+        root.findViewById(R.id.detailMapButton).setVisibility(
                 situation.hasAnyCoordinates() ? View.VISIBLE : View.GONE);
     }
 
-    public static void missing(Activity activity) {
-        ((TextView) activity.findViewById(R.id.detailTitle)).setText(R.string.unavailable);
-        activity.findViewById(R.id.detailDelay).setVisibility(View.GONE);
-        ((TextView) activity.findViewById(R.id.detailComment)).setText(R.string.unavailable_body);
+    public static void missing(View root) {
+        ((TextView) root.findViewById(R.id.detailTitle)).setText(R.string.unavailable);
+        root.findViewById(R.id.detailDelay).setVisibility(View.GONE);
+        ((TextView) root.findViewById(R.id.detailComment)).setText(R.string.unavailable_body);
         int[] lines = {R.id.detailRoads, R.id.detailDirection, R.id.detailFrom, R.id.detailTo,
                 R.id.detailWhen, R.id.detailDuration, R.id.detailLanes, R.id.detailCompliance,
                 R.id.detailProbability, R.id.detailUrgent, R.id.detailStatus, R.id.detailSource,
                 R.id.detailMapButton};
         for (int id : lines) {
-            activity.findViewById(id).setVisibility(View.GONE);
+            root.findViewById(id).setVisibility(View.GONE);
         }
     }
 
-    private static void setLine(Activity activity, int id, String label, String value) {
-        TextView view = activity.findViewById(id);
+    private static void setLine(View root, int id, String label, String value) {
+        TextView view = root.findViewById(id);
         if (value == null || value.isEmpty()) {
             view.setVisibility(View.GONE);
         } else {
@@ -77,7 +77,7 @@ public final class SituationBinder {
         }
     }
 
-    private static String point(com.gcu.trafficscotland.model.GeoPoint point) {
+    private static String point(GeoPoint point) {
         if (point == null) {
             return "";
         }
