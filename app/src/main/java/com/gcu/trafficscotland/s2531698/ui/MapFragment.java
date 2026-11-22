@@ -1,4 +1,4 @@
-package com.gcu.trafficscotland.ui;
+package com.gcu.trafficscotland.s2531698.ui;
 
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -15,10 +15,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.gcu.trafficscotland.R;
-import com.gcu.trafficscotland.logic.SituationText;
-import com.gcu.trafficscotland.map.OsmMapView;
-import com.gcu.trafficscotland.model.Situation;
+import com.gcu.trafficscotland.s2531698.R;
+import com.gcu.trafficscotland.s2531698.logic.SituationText;
+import com.gcu.trafficscotland.s2531698.map.OsmMapView;
+import com.gcu.trafficscotland.s2531698.model.Situation;
 
 /** Map view. The situations it draws come from {@link MainViewModel}; taps are sent back as selection. */
 public class MapFragment extends Fragment {

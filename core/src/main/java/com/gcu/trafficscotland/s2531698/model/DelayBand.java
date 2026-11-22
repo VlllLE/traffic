@@ -1,4 +1,4 @@
-package com.gcu.trafficscotland.model;
+package com.gcu.trafficscotland.s2531698.model;
 
 /**
  * Colour band for roadworks delays. Mapped from the DATEX delaysType value:

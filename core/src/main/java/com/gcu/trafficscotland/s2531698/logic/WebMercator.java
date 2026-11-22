@@ -1,4 +1,4 @@
-package com.gcu.trafficscotland.logic;
+package com.gcu.trafficscotland.s2531698.logic;
 
 /** Web Mercator helpers shared by the map view and its tests. */
 public final class WebMercator {

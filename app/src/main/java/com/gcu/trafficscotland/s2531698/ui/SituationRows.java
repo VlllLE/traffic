@@ -1,9 +1,9 @@
-package com.gcu.trafficscotland.ui;
+package com.gcu.trafficscotland.s2531698.ui;
 
-import com.gcu.trafficscotland.logic.Geo;
-import com.gcu.trafficscotland.logic.SituationText;
-import com.gcu.trafficscotland.model.DelayBand;
-import com.gcu.trafficscotland.model.Situation;
+import com.gcu.trafficscotland.s2531698.logic.Geo;
+import com.gcu.trafficscotland.s2531698.logic.SituationText;
+import com.gcu.trafficscotland.s2531698.model.DelayBand;
+import com.gcu.trafficscotland.s2531698.model.Situation;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,13 +1,13 @@
-package com.gcu.trafficscotland.ui;
+package com.gcu.trafficscotland.s2531698.ui;
 
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.gcu.trafficscotland.R;
-import com.gcu.trafficscotland.logic.SituationText;
-import com.gcu.trafficscotland.model.GeoPoint;
-import com.gcu.trafficscotland.model.Situation;
+import com.gcu.trafficscotland.s2531698.R;
+import com.gcu.trafficscotland.s2531698.logic.SituationText;
+import com.gcu.trafficscotland.s2531698.model.GeoPoint;
+import com.gcu.trafficscotland.s2531698.model.Situation;
 
 import java.util.Locale;
 

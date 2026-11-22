@@ -1,7 +1,7 @@
-package com.gcu.trafficscotland.logic;
+package com.gcu.trafficscotland.s2531698.logic;
 
-import com.gcu.trafficscotland.model.GeoPoint;
-import com.gcu.trafficscotland.model.Situation;
+import com.gcu.trafficscotland.s2531698.model.GeoPoint;
+import com.gcu.trafficscotland.s2531698.model.Situation;
 
 /** Distances used by the "situations near me" search. */
 public final class Geo {

@@ -1,4 +1,4 @@
-package com.gcu.trafficscotland.ui;
+package com.gcu.trafficscotland.s2531698.ui;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -33,13 +33,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.gcu.trafficscotland.R;
-import com.gcu.trafficscotland.data.DataOrigin;
-import com.gcu.trafficscotland.data.TrafficSnapshot;
-import com.gcu.trafficscotland.logic.SituationText;
-import com.gcu.trafficscotland.map.OsmMapView;
-import com.gcu.trafficscotland.model.FeedKind;
-import com.gcu.trafficscotland.model.Situation;
+import com.gcu.trafficscotland.s2531698.R;
+import com.gcu.trafficscotland.s2531698.data.DataOrigin;
+import com.gcu.trafficscotland.s2531698.data.TrafficSnapshot;
+import com.gcu.trafficscotland.s2531698.logic.SituationText;
+import com.gcu.trafficscotland.s2531698.map.OsmMapView;
+import com.gcu.trafficscotland.s2531698.model.FeedKind;
+import com.gcu.trafficscotland.s2531698.model.Situation;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 
 import java.time.Instant;
@@ -47,7 +47,9 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
- /* 67 67 6767676767676767 
+ /* Name - Matthew Jackson
+ Student ID  - S2531698
+ Programme - BSc Software Development
  */
 public class MainActivity extends AppCompatActivity implements LocationListener {
         private static final int LOCATION_REQUEST = 42;

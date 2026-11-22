@@ -1,4 +1,4 @@
-package com.gcu.trafficscotland.ui;
+package com.gcu.trafficscotland.s2531698.ui;
 
 import android.app.Application;
 
@@ -8,12 +8,12 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.SavedStateHandle;
 
-import com.gcu.trafficscotland.TrafficApp;
-import com.gcu.trafficscotland.data.TrafficRepository;
-import com.gcu.trafficscotland.data.TrafficSnapshot;
-import com.gcu.trafficscotland.logic.SituationQuery;
-import com.gcu.trafficscotland.model.FeedKind;
-import com.gcu.trafficscotland.model.Situation;
+import com.gcu.trafficscotland.s2531698.TrafficApp;
+import com.gcu.trafficscotland.s2531698.data.TrafficRepository;
+import com.gcu.trafficscotland.s2531698.data.TrafficSnapshot;
+import com.gcu.trafficscotland.s2531698.logic.SituationQuery;
+import com.gcu.trafficscotland.s2531698.model.FeedKind;
+import com.gcu.trafficscotland.s2531698.model.Situation;
 
 import java.util.List;
 

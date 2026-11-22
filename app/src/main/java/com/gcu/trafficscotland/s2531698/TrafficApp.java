@@ -1,8 +1,8 @@
-package com.gcu.trafficscotland;
+package com.gcu.trafficscotland.s2531698;
 
 import android.app.Application;
 
-import com.gcu.trafficscotland.data.TrafficRepository;
+import com.gcu.trafficscotland.s2531698.data.TrafficRepository;
 
 public class TrafficApp extends Application {
     private TrafficRepository repository;

@@ -1,4 +1,4 @@
-package com.gcu.trafficscotland.model;
+package com.gcu.trafficscotland.s2531698.model;
 
 /** Which DATEX publication a situation was read from. */
 public enum FeedKind {

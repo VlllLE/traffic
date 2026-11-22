@@ -1,4 +1,4 @@
-package com.gcu.trafficscotland.model;
+package com.gcu.trafficscotland.s2531698.model;
 
 import java.util.LinkedHashSet;
 import java.util.Set;

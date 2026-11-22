@@ -1,4 +1,4 @@
-package com.gcu.trafficscotland.model;
+package com.gcu.trafficscotland.s2531698.model;
 
 /** Icon group for a situation. Drawn with the app's own vector icons. */
 public enum MarkerKind {

@@ -1,15 +1,15 @@
-package com.gcu.trafficscotland.parser;
+package com.gcu.trafficscotland.s2531698.parser;
 
-import com.gcu.trafficscotland.logic.Geo;
-import com.gcu.trafficscotland.logic.RoadNames;
-import com.gcu.trafficscotland.logic.SituationQuery;
-import com.gcu.trafficscotland.logic.SituationText;
-import com.gcu.trafficscotland.logic.WebMercator;
-import com.gcu.trafficscotland.model.DelayBand;
-import com.gcu.trafficscotland.model.FeedKind;
-import com.gcu.trafficscotland.model.MarkerKind;
-import com.gcu.trafficscotland.model.ParseResult;
-import com.gcu.trafficscotland.model.Situation;
+import com.gcu.trafficscotland.s2531698.logic.Geo;
+import com.gcu.trafficscotland.s2531698.logic.RoadNames;
+import com.gcu.trafficscotland.s2531698.logic.SituationQuery;
+import com.gcu.trafficscotland.s2531698.logic.SituationText;
+import com.gcu.trafficscotland.s2531698.logic.WebMercator;
+import com.gcu.trafficscotland.s2531698.model.DelayBand;
+import com.gcu.trafficscotland.s2531698.model.FeedKind;
+import com.gcu.trafficscotland.s2531698.model.MarkerKind;
+import com.gcu.trafficscotland.s2531698.model.ParseResult;
+import com.gcu.trafficscotland.s2531698.model.Situation;
 
 import org.junit.Test;
 

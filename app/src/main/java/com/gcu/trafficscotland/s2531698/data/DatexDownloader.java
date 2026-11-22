@@ -1,4 +1,4 @@
-package com.gcu.trafficscotland.data;
+package com.gcu.trafficscotland.s2531698.data;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,9 +1,9 @@
-package com.gcu.trafficscotland.logic;
+package com.gcu.trafficscotland.s2531698.logic;
 
-import com.gcu.trafficscotland.model.DelayBand;
-import com.gcu.trafficscotland.model.FeedKind;
-import com.gcu.trafficscotland.model.MarkerKind;
-import com.gcu.trafficscotland.model.Situation;
+import com.gcu.trafficscotland.s2531698.model.DelayBand;
+import com.gcu.trafficscotland.s2531698.model.FeedKind;
+import com.gcu.trafficscotland.s2531698.model.MarkerKind;
+import com.gcu.trafficscotland.s2531698.model.Situation;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;

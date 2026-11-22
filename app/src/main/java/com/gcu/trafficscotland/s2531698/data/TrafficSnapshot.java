@@ -1,7 +1,7 @@
-package com.gcu.trafficscotland.data;
+package com.gcu.trafficscotland.s2531698.data;
 
-import com.gcu.trafficscotland.model.FeedKind;
-import com.gcu.trafficscotland.model.Situation;
+import com.gcu.trafficscotland.s2531698.model.FeedKind;
+import com.gcu.trafficscotland.s2531698.model.Situation;
 
 import java.util.ArrayList;
 import java.util.Collections;

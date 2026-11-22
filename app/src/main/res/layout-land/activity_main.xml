@@ -198,7 +198,7 @@
                     android:text="@string/use_my_location" />
             </LinearLayout>
 
-            <com.gcu.trafficscotland.map.OsmMapView
+            <com.gcu.trafficscotland.s2531698.map.OsmMapView
                 android:id="@+id/embeddedMap"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"

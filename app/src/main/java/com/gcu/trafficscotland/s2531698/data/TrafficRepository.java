@@ -1,4 +1,4 @@
-package com.gcu.trafficscotland.data;
+package com.gcu.trafficscotland.s2531698.data;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -8,11 +8,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
-import com.gcu.trafficscotland.BuildConfig;
-import com.gcu.trafficscotland.model.FeedKind;
-import com.gcu.trafficscotland.model.ParseResult;
-import com.gcu.trafficscotland.model.Situation;
-import com.gcu.trafficscotland.parser.DatexPullParser;
+import com.gcu.trafficscotland.s2531698.BuildConfig;
+import com.gcu.trafficscotland.s2531698.model.FeedKind;
+import com.gcu.trafficscotland.s2531698.model.ParseResult;
+import com.gcu.trafficscotland.s2531698.model.Situation;
+import com.gcu.trafficscotland.s2531698.parser.DatexPullParser;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

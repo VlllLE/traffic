@@ -9,11 +9,11 @@ if (datexFile.exists()) {
 }
 
 android {
-    namespace 'com.gcu.trafficscotland'
+    namespace 'com.gcu.trafficscotland.s2531698'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.gcu.trafficscotland"
+        applicationId "com.gcu.trafficscotland.s2531698"
         minSdk 26
         targetSdk 34
         versionCode 1

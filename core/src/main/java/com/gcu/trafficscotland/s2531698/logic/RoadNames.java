@@ -1,6 +1,6 @@
-package com.gcu.trafficscotland.logic;
+package com.gcu.trafficscotland.s2531698.logic;
 
-import com.gcu.trafficscotland.model.Situation;
+import com.gcu.trafficscotland.s2531698.model.Situation;
 
 import java.util.ArrayList;
 import java.util.List;

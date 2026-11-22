@@ -1,4 +1,4 @@
-package com.gcu.trafficscotland.ui;
+package com.gcu.trafficscotland.s2531698.ui;
 
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -13,9 +13,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.gcu.trafficscotland.R;
-import com.gcu.trafficscotland.logic.SituationText;
-import com.gcu.trafficscotland.model.Situation;
+import com.gcu.trafficscotland.s2531698.R;
+import com.gcu.trafficscotland.s2531698.logic.SituationText;
+import com.gcu.trafficscotland.s2531698.model.Situation;
 
 /** Detail view. It renders one situation from {@link MainViewModel} and sends the map action back. */
 public class DetailFragment extends Fragment {

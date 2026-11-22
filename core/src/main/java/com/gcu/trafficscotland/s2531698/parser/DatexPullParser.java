@@ -1,10 +1,10 @@
-package com.gcu.trafficscotland.parser;
+package com.gcu.trafficscotland.s2531698.parser;
 
-import com.gcu.trafficscotland.logic.RoadNames;
-import com.gcu.trafficscotland.model.FeedKind;
-import com.gcu.trafficscotland.model.GeoPoint;
-import com.gcu.trafficscotland.model.ParseResult;
-import com.gcu.trafficscotland.model.Situation;
+import com.gcu.trafficscotland.s2531698.logic.RoadNames;
+import com.gcu.trafficscotland.s2531698.model.FeedKind;
+import com.gcu.trafficscotland.s2531698.model.GeoPoint;
+import com.gcu.trafficscotland.s2531698.model.ParseResult;
+import com.gcu.trafficscotland.s2531698.model.Situation;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;

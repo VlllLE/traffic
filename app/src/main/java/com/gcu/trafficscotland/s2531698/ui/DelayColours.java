@@ -1,13 +1,13 @@
-package com.gcu.trafficscotland.ui;
+package com.gcu.trafficscotland.s2531698.ui;
 
 import android.content.Context;
 import android.graphics.Color;
 
-import com.gcu.trafficscotland.R;
-import com.gcu.trafficscotland.logic.SituationText;
-import com.gcu.trafficscotland.model.DelayBand;
-import com.gcu.trafficscotland.model.MarkerKind;
-import com.gcu.trafficscotland.model.Situation;
+import com.gcu.trafficscotland.s2531698.R;
+import com.gcu.trafficscotland.s2531698.logic.SituationText;
+import com.gcu.trafficscotland.s2531698.model.DelayBand;
+import com.gcu.trafficscotland.s2531698.model.MarkerKind;
+import com.gcu.trafficscotland.s2531698.model.Situation;
 
 /** Colours for the roadworks delay bands and the incident icons. */
 public final class DelayColours {

@@ -1,4 +1,4 @@
-package com.gcu.trafficscotland.map;
+package com.gcu.trafficscotland.s2531698.map;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -13,11 +13,11 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 
-import com.gcu.trafficscotland.logic.SituationText;
-import com.gcu.trafficscotland.logic.WebMercator;
-import com.gcu.trafficscotland.model.GeoPoint;
-import com.gcu.trafficscotland.model.Situation;
-import com.gcu.trafficscotland.ui.DelayColours;
+import com.gcu.trafficscotland.s2531698.logic.SituationText;
+import com.gcu.trafficscotland.s2531698.logic.WebMercator;
+import com.gcu.trafficscotland.s2531698.model.GeoPoint;
+import com.gcu.trafficscotland.s2531698.model.Situation;
+import com.gcu.trafficscotland.s2531698.ui.DelayColours;
 
 import java.io.File;
 import java.io.FileOutputStream;
