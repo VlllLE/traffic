@@ -167,7 +167,7 @@ public class TrafficRepository {
             loaded.origin = loaded.usedSaved ? DataOrigin.SAVED : DataOrigin.SAMPLE;
             loaded.notice = "DATEX client id and key are not in this build. "
                     + "Showing " + (loaded.usedSaved ? "the last saved copy." : "the coursework sample.")
-                    + " Copy datex.properties.example to datex.properties, add your credentials and rebuild.";
+                    + " Create datex.properties with clientId and clientKey, then rebuild.";
             return loaded;
         }
         if (!isOnline()) {

@@ -6,8 +6,8 @@ Android app for the Mobile Platform Development coursework. It reads the Traffic
 
 1. In Android Studio, choose File → Open and select this folder.
 2. Let Gradle sync. The project targets Android 8.0 (API 26) and above.
-3. Copy `datex.properties.example` to `datex.properties` in this folder.
-4. Put your DATEX client id and key in that file. It is gitignored, so the keys are not committed.
+3. Create `datex.properties` in this folder. It is gitignored, so the keys are not committed.
+4. Put your DATEX client id and key in it as `clientId=...` and `clientKey=...`. The names are case-sensitive.
 5. Build the project again. The id and key are compiled into the app from that file.
 6. Run it on an emulator or a phone.
 
