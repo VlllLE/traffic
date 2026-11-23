@@ -18,7 +18,7 @@ public class DatexDownloader {
     public static final String UNPLANNED_URL =
             "https://datex2.trafficscotland.org/rest/2.3/publications/UnplannedEvents/Content.xml";
     public static final String ROADWORKS_URL =
-            "https://datex2.trafficscotland.org/rest/2.3/publications/Roadworks/Content.xml";
+            "https://datex2.trafficscotland.org/rest/2.3/publications/CurrentRoadworks/Content.xml";
 
     public String download(String url, String clientId, String clientKey) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();

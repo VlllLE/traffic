@@ -14,7 +14,7 @@ Android app for the Mobile Platform Development coursework. It reads the Traffic
 Until `datex.properties` is filled in, the app shows the coursework sample XML (or the last feed it managed to save) and says so on screen. With valid keys it downloads:
 
 - `https://datex2.trafficscotland.org/rest/2.3/publications/UnplannedEvents/Content.xml`
-- `https://datex2.trafficscotland.org/rest/2.3/publications/Roadworks/Content.xml`
+- `https://datex2.trafficscotland.org/rest/2.3/publications/CurrentRoadworks/Content.xml`
 
 If the roadworks publication on your portal uses a different name, change `ROADWORKS_URL` in `DatexDownloader`.
 
