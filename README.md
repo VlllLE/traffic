@@ -2,9 +2,9 @@
 
 Android app for the Mobile Platform Development coursework. It reads the Traffic Scotland DATEX II unplanned-events and current-roadworks feeds with `XmlPullParser`, keeps the parsed situations in model classes, and shows them in a list, a detail screen and a map.
 
-## Open in Android Studio
+## Setup
 
-1. Android Studio: File → Open, and choose this folder (`TrafficScotland`).
+1. In Android Studio, choose File → Open and select this folder.
 2. Let Gradle sync. The project targets Android 8.0 (API 26) and above.
 3. Copy `datex.properties.example` to `datex.properties` in this folder.
 4. Put your DATEX client id and key in that file. It is gitignored, so the keys are not committed.
@@ -28,15 +28,3 @@ If the roadworks publication on your portal uses a different name, change `ROADW
 - Draws situations on a pan-and-zoom map, including the line between the from and to points.
 - Portrait and landscape use different layouts. Landscape keeps the list beside the map.
 - Refreshes on a 5 minute timer, on a background download thread and a separate parse thread. The last successful download is saved and reused when the network fails.
-
-## Checks
-
-Parser, road search, distance and map maths are in the `core` module:
-
-```
-./gradlew :core:test
-```
-
-## Before you hand it in
-
-The brief asks for the project folder and package to use `Surname_GivenName_StudentId`. Rename those, and fill in the name block at the top of `MainActivity`, before submission. The brief also asks you to say how generative AI was used. This project was produced with Cursor’s coding agent (Grok), which wrote the app from the coursework brief, the skeleton and the two sample XML files. Keep the prompts you used and describe that in the submission document.
